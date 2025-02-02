@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бағалау парағы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1E90FF;
+            text-align: center;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Горизонталды прокрутканы жою */
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            max-width: 100vw;
+            overflow-x: auto; /* Горизонталды прокрутка қосу */
+            padding-bottom: 20px; /* Төменгі жақта кеңістік қалдыру */
+        }
+        .student {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 150px;
+            color: black;
+            margin: 5px;
+            flex-shrink: 0;
+        }
+        .score {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .button img {
+            width: 96px; /* Кішірейтілген кнопка */
+            height: 65px;
+            cursor: pointer;
+        }
+        .student span:first-child {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .progress-container {
+    width: 80%; /* Сызықтың енін 80% жасаймыз */
+    height: 15px;
+    background-color: rgb(64, 64, 64);
+    position: relative;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto; /* Орталау */
+    border-radius: 20px;
+}
+
+        .progress-bar {
+            height: 100%;
+            background-color: blue;
+            width: 0%;
+            position: absolute;
+        }
+        .circle-img {
+            width: 100px; /* Суретті кішірейту */
+            height: 100px;
+            position: absolute;
+            top: -60px;
+            left: 0;
+            transition: left 1s ease-in-out;
+        }
+        .progress-wrapper {
+            margin-top: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .name-on-bar {
+            position: absolute;
+            top: -25px;
+            color: white;
+            font-weight: bold;
+            font-size: 17px;
+            left: -60px;
+        }
+        /* Жаңа стильдер үшін сол және оң контейнер */
+        .progress-side {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            align-items: center;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Бағалау парағы</h1>
+    <!-- Кнопкалар контейнері -->
+    <div class="button-container" id="students"></div>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+    <div style="display: flex; justify-content: space-around;">
+        <!-- Сол жақ бөлік -->
+        <div id="left-progress-container" class="progress-side"></div>
+        <!-- Оң жақ бөлік -->
+        <div id="right-progress-container" class="progress-side"></div>
+    </div>
+</br>
+</br>
+</br>
+    <script>
+        const studentNames = ["Қабыл", "Қазына", "О Алдиар", "Маржан", "Нағим", "К Айкөркем", "Мустафа", "Әділбек", "Диана", "Амира", "Мұхаммед", "Мидина", "Алтаир", "С Алдиар", "Сафия", "Нұрислам", "Әдия", "Аяла", "Абдрахим", "Т Айкөркем", "Данил", "Али", "Айару", "Муслим"];
+        const students = [];
+        
+        for (let i = 0; i < studentNames.length; i++) {
+            students.push({ name: `${studentNames[i]}`, score: 0 });
+        }
+
+        const container = document.getElementById("students");
+        const leftProgressContainer = document.getElementById("left-progress-container");
+        const rightProgressContainer = document.getElementById("right-progress-container");
+
+        students.forEach((student, index) => {
+            // Кнопканы жасау
+            const studentDiv = document.createElement("div");
+            studentDiv.className = "student";
+            studentDiv.innerHTML = `
+                <span>${student.name}</span>
+                <div class="score" id="score-${index}">${student.score}</div>
+                <span class="button" onclick="increaseScore(${index})">
+                    <img src="sss.png" alt="Асық">
+                </span>
+                </br>
+            `;
+            container.appendChild(studentDiv);
+
+            // Прогресс бар және дөңгелекті бөлек орналастыру
+            const progressWrapper = document.createElement("div");
+            progressWrapper.className = "progress-wrapper";
+            progressWrapper.innerHTML = `
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar-${index}"></div>
+                    <img class="circle-img" id="circle-${index}" src="ssonic.png" alt="Көлік">
+                    <div class="name-on-bar" id="name-on-bar-${index}">${student.name}</div>
+                </div>
+            `;
+
+            // 12 оқушы үшін сол жақ және оң жаққа бөлу
+            if (index < 12) {
+                leftProgressContainer.appendChild(progressWrapper);
+            } else {
+                rightProgressContainer.appendChild(progressWrapper);
+            }
+        });
+
+        function increaseScore(index) {
+            students[index].score += 1;
+            document.getElementById(`score-${index}`).innerText = students[index].score;
+
+            // Прогресс бары мен дөңгелектің қозғалу анимациясы
+            const progressBar = document.getElementById(`progress-bar-${index}`);
+            const circle = document.getElementById(`circle-${index}`);
+            const nameOnBar = document.getElementById(`name-on-bar-${index}`);
+
+            let progress = (students[index].score / 10) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Суреттің қозғалысы
+            if (students[index].score <= 10) {
+                circle.style.left = `${progress}%`;
+                nameOnBar.style.left = `${progress}%`;
+            }
+
+            // Финишке жеткенде хабарлама
+            if (students[index].score >= 10) {
+                alert(`${students[index].name} финишке жетті!`);
+            }
+        }
+    </script>
+</body>
+</html>
