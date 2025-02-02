@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бағалау парағы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1E90FF;
+            text-align: center;
+            color: white;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .student {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 250px;
+            color: black;
+            justify-content: space-between;
+        }
+        .score {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .button img {
+            width: 100px;
+            height: 75px;
+            cursor: pointer;
+        }
+        .student span:first-child {
+    font-size: 18px; /* Қалаған өлшеміңізге өзгертіңіз */
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Бағалау парағы</h1>
+</br>
+    <div class="container" id="students"></div>
+    <script>
+        const studentNames = ["Қабыл", "Қазына", "О Алдиар", "Маржан", "Нағим", "К Айкөркем", "Мустафа", "Әділбек", "Диана", "Амира", "Мұхаммед", "Мидина", "Алтаир", "С Алдиар", "Сафия", "Нұрислам", "Әдия", "Аяла", "Абдрахим", "Т Айкөркем", "Данил", "Али", "Айару", "Муслим"];
+        const students = [];
+        
+        for (let i = 0; i < studentNames.length; i++) {
+            students.push({ name: `${studentNames[i]}`, score: 0 });
+        }
+        
+        const container = document.getElementById("students");
+        students.forEach((student, index) => {
+            const studentDiv = document.createElement("div");
+            studentDiv.className = "student";
+            studentDiv.innerHTML = `
+                <span>${student.name}</span>
+                <span class="score" id="score-${index}">${student.score}</span>
+                <span class="button" onclick="increaseScore(${index})">
+                    <img src="sss.png" alt="Асық">
+                </span>
+            `;
+            container.appendChild(studentDiv);
+        });
+        
+        function increaseScore(index) {
+            students[index].score += 1;
+            document.getElementById(`score-${index}`).innerText = students[index].score;
+        }
+    </script>
+</body>
+</html>
